@@ -21,9 +21,12 @@ export default function Hero() {
 
   return (
     <div className="relative bg-gradient-to-b from-white via-blue-50 to-white dark:from-black dark:via-gray-900 dark:to-black transition-colors duration-300 overflow-hidden">
-      {/* Soft Blobs */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-200 dark:bg-blue-900 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-300 dark:bg-purple-900 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+     {/* Full Background Blobs */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-200 dark:bg-blue-900 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-300 dark:bg-purple-900 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+      </div>
+
 
       {/* Hero Section */}
       <section
