@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ChevronsDown } from "lucide-react";
 import {
@@ -12,6 +12,7 @@ import {
   Settings,
 } from "lucide-react";
 
+// === Skill Icons with Names ===
 const skills = [
   { name: "HTML", icon: Code },
   { name: "CSS", icon: Palette },
@@ -24,14 +25,15 @@ const skills = [
 ];
 
 export default function Hero() {
+  // === State & Refs ===
   const [isDarkMode, setIsDarkMode] = useState(false);
-
   const marqueeRef = useRef(null);
   const animationFrame = useRef(null);
   const lastTimestamp = useRef(null);
   const offsetX = useRef(0);
-  const speed = 60; // pixels per second
+  const speed = 60;
 
+  // === Theme Detection ===
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     setIsDarkMode(savedTheme === "dark");
@@ -41,11 +43,11 @@ export default function Hero() {
     document.documentElement.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
+  // === Marquee Animation ===
   const animateMarquee = (timestamp) => {
     if (!lastTimestamp.current) lastTimestamp.current = timestamp;
-    const delta = (timestamp - lastTimestamp.current) / 1000; // in seconds
+    const delta = (timestamp - lastTimestamp.current) / 1000;
     lastTimestamp.current = timestamp;
-
     offsetX.current -= speed * delta;
 
     const el = marqueeRef.current;
@@ -65,28 +67,173 @@ export default function Hero() {
     return () => cancelAnimationFrame(animationFrame.current);
   }, []);
 
-  const pauseMarquee = () => {
-    cancelAnimationFrame(animationFrame.current);
-  };
-
+  const pauseMarquee = () => cancelAnimationFrame(animationFrame.current);
   const resumeMarquee = () => {
     lastTimestamp.current = null;
     animationFrame.current = requestAnimationFrame(animateMarquee);
   };
 
   return (
-    <div className="relative bg-gradient-to-b from-white via-blue-50 to-white dark:from-black dark:via-gray-900 dark:to-black transition-colors duration-300 overflow-hidden">
-      {/* Background Blobs */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-200 dark:bg-blue-900 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-300 dark:bg-purple-900 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+    <div className="relative overflow-hidden bg-white dark:bg-black transition-colors duration-500">
+      {/* === Floating Code Icons === */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {Array.from({ length: 24 }).map((_, index) => {
+          const skill = skills[index % skills.length];
+          const left = `${Math.random() * 100}%`;
+          const top = `${Math.random() * 100}%`;
+          const scale = Math.random() * 0.6 + 0.4;
+          const rotate = Math.random() * 360;
+          const duration = 15 + Math.random() * 25;
+          const delay = Math.random() * 10;
+          const blur = Math.random() * 4 + 1;
+          const direction = index % 2 === 0 ? "y" : "x";
+          const zIndex = Math.floor(Math.random() * 3);
+
+          return (
+            <motion.div
+              key={index}
+              aria-hidden="true"
+              className={`absolute ${
+                isDarkMode ? "text-blue-800/30" : "text-blue-500/40"
+              } hover:opacity-70 transition-all duration-700 ease-in-out hover:scale-110 hover:drop-shadow-xl`}
+              initial={{ [direction]: 0, scale, rotate }}
+              animate={{ [direction]: ["0%", "20%", "0%"], rotate: [0, 360] }}
+              transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
+              style={{ left, top, zIndex, filter: `blur(${blur}px)` }}
+            >
+              <skill.icon className="w-10 h-10 sm:w-14 sm:h-14 drop-shadow-md" />
+            </motion.div>
+          );
+        })}
       </div>
 
-      {/* Hero Section */}
+      {/* === Parallax Sparkles === */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {Array.from({ length: 40 }).map((_, i) => {
+          const size = Math.random() * 4 + 2;
+          const top = `${Math.random() * 100}%`;
+          const left = `${Math.random() * 100}%`;
+          const delay = Math.random() * 5;
+          const opacity = Math.random() * 0.4 + 0.1;
+          const blur = Math.random() * 2 + 0.5;
+          const rotation = Math.random() > 0.5 ? [0, 360] : [360, 0];
+
+          const colors = isDarkMode
+            ? [
+                "rgba(255,255,255,0.9)",
+                "rgba(173, 216, 230, 0.8)",
+                "rgba(255, 240, 245, 0.7)",
+                "rgba(255, 250, 205, 0.6)",
+              ]
+            : [
+                "rgba(147, 197, 253, 0.6)",
+                "rgba(196, 181, 253, 0.6)",
+                "rgba(253, 230, 138, 0.5)",
+                "rgba(240, 240, 255, 0.7)",
+              ];
+
+          const color = colors[Math.floor(Math.random() * colors.length)];
+
+          return (
+            <motion.div
+              key={`sparkle-${i}`}
+              className="absolute rounded-full"
+              style={{
+                width: size,
+                height: size,
+                top,
+                left,
+                opacity,
+                backgroundColor: color,
+                filter: `blur(${blur}px)`,
+                boxShadow: `0 0 ${size * 2}px ${color}`,
+              }}
+              animate={{
+                x: [0, Math.random() * 12 - 6, 0],
+                y: [0, Math.random() * 12 - 6, 0],
+                rotate: rotation,
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: 5 + Math.random() * 4,
+                delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          );
+        })}
+      </div>
+
+      {/* === Floating Symbols === */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {Array.from({ length: 30 }).map((_, index) => {
+          const symbols = ["</>", "{}", "()", "@", "#", "<div>", "</div>", "&&", "||", "!=="];
+          const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+
+          const top = `${Math.random() * 90 + 5}%`;
+          const left = `${Math.random() * 90 + 5}%`;
+          const rotateStart = Math.random() * 360;
+          const rotateEnd = rotateStart + 60;
+          const delay = Math.random() * 3;
+          const duration = 10 + Math.random() * 10;
+          const opacity = Math.random() * 0.4 + 0.2;
+          const scaleStart = Math.random() * 0.7 + 0.7;
+
+          const colors = isDarkMode
+            ? [
+                "rgba(59, 130, 246, 0.3)",
+                "rgba(139, 92, 246, 0.3)",
+                "rgba(34, 197, 94, 0.3)",
+                "rgba(250, 204, 21, 0.3)",
+              ]
+            : [
+                "rgba(59, 130, 246, 0.5)",
+                "rgba(139, 92, 246, 0.5)",
+                "rgba(34, 197, 94, 0.5)",
+                "rgba(250, 204, 21, 0.5)",
+              ];
+
+          const color = colors[Math.floor(Math.random() * colors.length)];
+
+          return (
+            <motion.div
+              key={`symbol-${index}`}
+              className="absolute font-mono"
+              style={{
+                top,
+                left,
+                rotate: rotateStart,
+                fontSize: `${Math.random() * 1.5 + 0.8}rem`,
+                color,
+                opacity,
+                filter: "blur(0.5px) drop-shadow(0 0 2px rgba(0,0,0,0.1))",
+              }}
+              animate={{
+                y: ["0%", "-15%", "0%"],
+                rotate: [rotateStart, rotateEnd, rotateStart],
+                scale: [scaleStart, scaleStart + 0.2, scaleStart],
+                opacity: [opacity, opacity + 0.1, opacity],
+              }}
+              transition={{
+                delay,
+                duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              {symbol}
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* === Hero Section === */}
       <section
         id="hero"
         className="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 py-20 text-center"
       >
+        {/* Tagline */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -96,6 +243,7 @@ export default function Hero() {
           Front-End Developer
         </motion.div>
 
+        {/* Heading */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,24 +251,23 @@ export default function Hero() {
           className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight"
         >
           Hi, I'm{" "}
-          <span className="text-blue-600 dark:text-blue-400">
-            Ralph Hontiveros
-          </span>
+          <span className="text-blue-600 dark:text-blue-400">Ralph Hontiveros</span>
         </motion.h1>
 
+        {/* Description */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
           className="mt-6 text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-2xl"
         >
-          I create responsive and interactive web interfaces using modern
-          front-end tools like
+          I create responsive and interactive web interfaces using modern front-end tools like
           <span className="font-semibold text-blue-600 dark:text-blue-300"> ReactJS</span>,
           <span className="font-semibold text-blue-600 dark:text-blue-300"> TailwindCSS</span>, and
           <span className="font-semibold text-blue-600 dark:text-blue-300"> Axios</span>.
         </motion.p>
 
+        {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -151,32 +298,28 @@ export default function Hero() {
         </motion.div>
 
         {/* Infinite Marquee */}
-<div className="mt-10 w-full overflow-hidden relative">
-  {/* Side Fades */}
-  <div className="absolute left-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none" />
-  <div className="absolute right-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none" />
-
-  {/* Marquee Content */}
-  <div
-    ref={marqueeRef}
-    className="flex w-max gap-4 sm:gap-6 md:gap-8 px-4 sm:px-10 py-4 sm:py-6 will-change-transform select-none"
-    onMouseEnter={pauseMarquee}
-    onMouseLeave={resumeMarquee}
-  >
-    {[...skills, ...skills, ...skills].map((skill, index) => (
-      <div
-        key={index}
-        className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-transparent bg-white/10 dark:bg-white/5 backdrop-blur-lg text-gray-900 dark:text-white font-medium shadow-[inset_0_0_4px_rgba(255,255,255,0.2)] hover:shadow-[0_0_15px_rgba(59,130,246,0.6)] hover:border-blue-400 transition-all duration-300 hover:scale-105"
-      >
-        <div className="p-1.5 sm:p-2 rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-blue-600 text-white dark:from-blue-600 dark:to-blue-400 shadow-md group-hover:rotate-[15deg] transition-transform duration-300">
-          <skill.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+        <div className="mt-10 w-full overflow-hidden relative">
+          <div className="absolute left-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none" />
+          <div
+            ref={marqueeRef}
+            onMouseEnter={pauseMarquee}
+            onMouseLeave={resumeMarquee}
+            className="flex w-max gap-4 sm:gap-6 md:gap-8 px-4 sm:px-10 py-4 sm:py-6 will-change-transform select-none"
+          >
+            {[...skills, ...skills, ...skills].map((skill, index) => (
+              <div
+                key={index}
+                className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-transparent bg-white/10 dark:bg-white/5 backdrop-blur-lg text-gray-900 dark:text-white font-medium shadow-[inset_0_0_4px_rgba(255,255,255,0.2)] hover:shadow-[0_0_15px_rgba(59,130,246,0.6)] hover:border-blue-400 transition-all duration-300 hover:scale-105"
+              >
+                <div className="p-1.5 sm:p-2 rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-blue-600 text-white dark:from-blue-600 dark:to-blue-400 shadow-md group-hover:rotate-[15deg] transition-transform duration-300">
+                  <skill.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <span className="text-xs sm:text-sm md:text-base">{skill.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <span className="text-xs sm:text-sm md:text-base">{skill.name}</span>
-      </div>
-    ))}
-  </div>
-</div>
-
       </section>
     </div>
   );
