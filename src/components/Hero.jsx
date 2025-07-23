@@ -1,7 +1,10 @@
+// ===== Imports =====
 import React, { useEffect, useState, useRef } from "react";
+import { Sparkle } from "lucide-react";
+import { Typewriter } from "react-simple-typewriter";
 import { motion } from "framer-motion";
-import { ChevronsDown } from "lucide-react";
 import {
+  ChevronsDown,
   Code,
   Palette,
   Cpu,
@@ -10,9 +13,15 @@ import {
   Zap,
   Terminal,
   Settings,
+  Instagram,
+  Linkedin,
+  Twitter,
+  Facebook,
+  Phone,
+  Music2,
 } from "lucide-react";
 
-// === Skill Icons with Names ===
+// ===== Skills List =====
 const skills = [
   { name: "HTML", icon: Code },
   { name: "CSS", icon: Palette },
@@ -24,30 +33,107 @@ const skills = [
   { name: "jQuery", icon: Settings },
 ];
 
+// ===== Main Component =====
 export default function Hero() {
-  // === State & Refs ===
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.classList.contains("dark")
+  );
+
+  // Refs
   const marqueeRef = useRef(null);
   const animationFrame = useRef(null);
   const lastTimestamp = useRef(null);
   const offsetX = useRef(0);
+  const canvasRef = useRef(null);
+
   const speed = 60;
 
-  // === Theme Detection ===
+  // ===== Effect: Watch for Theme Change =====
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    setIsDarkMode(savedTheme === "dark");
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
   }, []);
 
+  // ===== Effect: Canvas Background Animation =====
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDarkMode);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+    let points = [];
+
+    const initPoints = () => {
+      points = Array.from({ length: 80 }).map(() => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+      }));
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      const dotColor = isDarkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.4)";
+      const baseLineColor = isDarkMode ? [255, 255, 255] : [0, 0, 0];
+
+      for (let i = 0; i < points.length; i++) {
+        const p = points[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = dotColor;
+        ctx.fill();
+
+        for (let j = i + 1; j < points.length; j++) {
+          const q = points[j];
+          const dist = Math.hypot(p.x - q.x, p.y - q.y);
+          if (dist < 120) {
+            const opacity = 1 - dist / 120;
+            ctx.strokeStyle = `rgba(${baseLineColor[0]},${baseLineColor[1]},${baseLineColor[2]},${opacity})`;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    };
+
+    initPoints();
+    draw();
+
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initPoints();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [isDarkMode]);
 
-  // === Marquee Animation ===
+  // ===== Marquee Animation Functions =====
   const animateMarquee = (timestamp) => {
     if (!lastTimestamp.current) lastTimestamp.current = timestamp;
     const delta = (timestamp - lastTimestamp.current) / 1000;
     lastTimestamp.current = timestamp;
+
     offsetX.current -= speed * delta;
 
     const el = marqueeRef.current;
@@ -73,222 +159,111 @@ export default function Hero() {
     animationFrame.current = requestAnimationFrame(animateMarquee);
   };
 
+  // ===== Render =====
   return (
     <div className="relative overflow-hidden bg-white dark:bg-black transition-colors duration-500">
-      {/* === Floating Code Icons === */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {Array.from({ length: 24 }).map((_, index) => {
-          const skill = skills[index % skills.length];
-          const left = `${Math.random() * 100}%`;
-          const top = `${Math.random() * 100}%`;
-          const scale = Math.random() * 0.6 + 0.4;
-          const rotate = Math.random() * 360;
-          const duration = 15 + Math.random() * 25;
-          const delay = Math.random() * 10;
-          const blur = Math.random() * 4 + 1;
-          const direction = index % 2 === 0 ? "y" : "x";
-          const zIndex = Math.floor(Math.random() * 3);
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-0 w-full h-full pointer-events-none"
+      />
 
-          return (
-            <motion.div
-              key={index}
-              aria-hidden="true"
-              className={`absolute ${
-                isDarkMode ? "text-blue-800/30" : "text-blue-500/40"
-              } hover:opacity-70 transition-all duration-700 ease-in-out hover:scale-110 hover:drop-shadow-xl`}
-              initial={{ [direction]: 0, scale, rotate }}
-              animate={{ [direction]: ["0%", "20%", "0%"], rotate: [0, 360] }}
-              transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
-              style={{ left, top, zIndex, filter: `blur(${blur}px)` }}
-            >
-              <skill.icon className="w-10 h-10 sm:w-14 sm:h-14 drop-shadow-md" />
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* === Parallax Sparkles === */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {Array.from({ length: 40 }).map((_, i) => {
-          const size = Math.random() * 4 + 2;
-          const top = `${Math.random() * 100}%`;
-          const left = `${Math.random() * 100}%`;
-          const delay = Math.random() * 5;
-          const opacity = Math.random() * 0.4 + 0.1;
-          const blur = Math.random() * 2 + 0.5;
-          const rotation = Math.random() > 0.5 ? [0, 360] : [360, 0];
-
-          const colors = isDarkMode
-            ? [
-                "rgba(255,255,255,0.9)",
-                "rgba(173, 216, 230, 0.8)",
-                "rgba(255, 240, 245, 0.7)",
-                "rgba(255, 250, 205, 0.6)",
-              ]
-            : [
-                "rgba(147, 197, 253, 0.6)",
-                "rgba(196, 181, 253, 0.6)",
-                "rgba(253, 230, 138, 0.5)",
-                "rgba(240, 240, 255, 0.7)",
-              ];
-
-          const color = colors[Math.floor(Math.random() * colors.length)];
-
-          return (
-            <motion.div
-              key={`sparkle-${i}`}
-              className="absolute rounded-full"
-              style={{
-                width: size,
-                height: size,
-                top,
-                left,
-                opacity,
-                backgroundColor: color,
-                filter: `blur(${blur}px)`,
-                boxShadow: `0 0 ${size * 2}px ${color}`,
-              }}
-              animate={{
-                x: [0, Math.random() * 12 - 6, 0],
-                y: [0, Math.random() * 12 - 6, 0],
-                rotate: rotation,
-                scale: [1, 1.3, 1],
-              }}
-              transition={{
-                duration: 5 + Math.random() * 4,
-                delay,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {/* === Floating Symbols === */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {Array.from({ length: 30 }).map((_, index) => {
-          const symbols = ["</>", "{}", "()", "@", "#", "<div>", "</div>", "&&", "||", "!=="];
-          const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-
-          const top = `${Math.random() * 90 + 5}%`;
-          const left = `${Math.random() * 90 + 5}%`;
-          const rotateStart = Math.random() * 360;
-          const rotateEnd = rotateStart + 60;
-          const delay = Math.random() * 3;
-          const duration = 10 + Math.random() * 10;
-          const opacity = Math.random() * 0.4 + 0.2;
-          const scaleStart = Math.random() * 0.7 + 0.7;
-
-          const colors = isDarkMode
-            ? [
-                "rgba(59, 130, 246, 0.3)",
-                "rgba(139, 92, 246, 0.3)",
-                "rgba(34, 197, 94, 0.3)",
-                "rgba(250, 204, 21, 0.3)",
-              ]
-            : [
-                "rgba(59, 130, 246, 0.5)",
-                "rgba(139, 92, 246, 0.5)",
-                "rgba(34, 197, 94, 0.5)",
-                "rgba(250, 204, 21, 0.5)",
-              ];
-
-          const color = colors[Math.floor(Math.random() * colors.length)];
-
-          return (
-            <motion.div
-              key={`symbol-${index}`}
-              className="absolute font-mono"
-              style={{
-                top,
-                left,
-                rotate: rotateStart,
-                fontSize: `${Math.random() * 1.5 + 0.8}rem`,
-                color,
-                opacity,
-                filter: "blur(0.5px) drop-shadow(0 0 2px rgba(0,0,0,0.1))",
-              }}
-              animate={{
-                y: ["0%", "-15%", "0%"],
-                rotate: [rotateStart, rotateEnd, rotateStart],
-                scale: [scaleStart, scaleStart + 0.2, scaleStart],
-                opacity: [opacity, opacity + 0.1, opacity],
-              }}
-              transition={{
-                delay,
-                duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              {symbol}
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* === Hero Section === */}
-      <section
-        id="hero"
-        className="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 py-20 text-center"
-      >
-        {/* Tagline */}
+      <section className="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 py-24 text-center">
+        {/* === Animated Developer Badge === */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-4 px-4 py-1 text-sm font-semibold uppercase tracking-wide bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200 rounded-full shadow-sm"
+          className="mb-6 inline-flex items-center gap-2 px-4 py-2 text-sm sm:text-base font-semibold tracking-widest uppercase rounded-full bg-gradient-to-r from-blue-100 via-blue-50 to-blue-100 dark:from-blue-800 dark:via-blue-900 dark:to-blue-800 text-blue-800 dark:text-blue-200 shadow-md backdrop-blur-sm"
         >
-          Front-End Developer
+          <Sparkle className="w-4 h-4 text-blue-500 dark:text-blue-300 animate-pulse" />
+          <Typewriter
+            words={["Front-End Developer", "React Enthusiast", "UI/UX Explorer"]}
+            loop={0}
+            cursor
+            cursorStyle="|"
+            typeSpeed={65}
+            deleteSpeed={45}
+            delaySpeed={2000}
+          />
         </motion.div>
 
-        {/* Heading */}
+        {/* === Hero Heading === */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight"
-        >
-          Hi, I'm{" "}
-          <span className="text-blue-600 dark:text-blue-400">Ralph Hontiveros</span>
-        </motion.h1>
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1 }}
+  className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight max-w-6xl mx-auto text-center text-gray-900 dark:text-white tracking-tight"
+>
+  Hi, I'm{" "}
+  <span className="relative inline-block group">
+    <span
+      className="bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 bg-clip-text text-transparent dark:from-cyan-300 dark:via-sky-400 dark:to-indigo-300 drop-shadow-[0_2px_5px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out group-hover:brightness-110 group-hover:saturate-150"
+    >
+      Ralph Hontiveros
+    </span>
+    <span className="absolute left-0 bottom-0 w-full h-[3px] bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 opacity-40 rounded-md transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+  </span>
+</motion.h1>
 
-        {/* Description */}
+        {/* === Paragraph Intro === */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="mt-6 text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-2xl"
+          className="mt-6 text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl text-center leading-relaxed"
         >
-          I create responsive and interactive web interfaces using modern front-end tools like
-          <span className="font-semibold text-blue-600 dark:text-blue-300"> ReactJS</span>,
-          <span className="font-semibold text-blue-600 dark:text-blue-300"> TailwindCSS</span>, and
-          <span className="font-semibold text-blue-600 dark:text-blue-300"> Axios</span>.
+          I build smooth, responsive, and modern web interfaces using{" "}
+          <span className="font-semibold text-blue-600 dark:text-blue-300">ReactJS</span>,{" "}
+          <span className="font-semibold text-blue-600 dark:text-blue-300">TailwindCSS</span>, and{" "}
+          <span className="font-semibold text-blue-600 dark:text-blue-300">Axios</span>.
+          My goal is to bring ideas to life with clean code and delightful UI.
         </motion.p>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="mt-10 flex flex-col sm:flex-row gap-4"
-        >
-          <a
-            href="#projects"
-            className="px-8 py-3 text-base sm:text-lg font-semibold bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 hover:scale-105 transition-all duration-300"
-          >
-            View Projects
-          </a>
-          <a
-            href="#contact"
-            className="px-8 py-3 text-base sm:text-lg font-semibold border border-blue-600 dark:border-blue-300 text-blue-600 dark:text-blue-300 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900 hover:scale-105 transition-all duration-300"
-          >
-            Contact Me
-          </a>
-        </motion.div>
 
-        {/* Scroll Down Icon */}
+
+        {/* === Contact Me Button === */}
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.3, duration: 0.8 }}
+  className="mt-16 text-center"
+>
+  <a
+    href="#contact"
+    className="inline-block px-10 py-4 text-base font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg backdrop-blur-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+  >
+    Contact Me
+  </a>
+</motion.div>
+
+{/* === Minimal Media Icons Grid === */}
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.5, duration: 0.8 }}
+  className="mt-8 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-3xl mx-auto px-4"
+>
+  {[
+    { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yourusername", label: "Instagram" },
+    { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com/in/yourusername", label: "LinkedIn" },
+    { icon: <Twitter className="w-5 h-5" />, href: "https://twitter.com/yourusername", label: "Twitter" },
+    { icon: <Facebook className="w-5 h-5" />, href: "https://facebook.com/yourusername", label: "Facebook" },
+    { icon: <Phone className="w-5 h-5" />, href: "https://wa.me/yourphonenumber", label: "WhatsApp" },
+    { icon: <Music2 className="w-5 h-5" />, href: "https://tiktok.com/@yourusername", label: "TikTok" },
+  ].map(({ icon, href, label }) => (
+    <a
+      key={label}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all duration-300"
+      aria-label={label}
+    >
+      {icon}
+    </a>
+  ))}
+</motion.div>
+        {/* === Scroll Icon === */}
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 1.5 }}
@@ -297,7 +272,7 @@ export default function Hero() {
           <ChevronsDown className="w-6 h-6 text-blue-600 dark:text-blue-300" />
         </motion.div>
 
-        {/* Infinite Marquee */}
+        {/* === Skills Marquee === */}
         <div className="mt-10 w-full overflow-hidden relative">
           <div className="absolute left-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none" />
@@ -315,7 +290,9 @@ export default function Hero() {
                 <div className="p-1.5 sm:p-2 rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-blue-600 text-white dark:from-blue-600 dark:to-blue-400 shadow-md group-hover:rotate-[15deg] transition-transform duration-300">
                   <skill.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <span className="text-xs sm:text-sm md:text-base">{skill.name}</span>
+                <span className="text-xs sm:text-sm md:text-base">
+                  {skill.name}
+                </span>
               </div>
             ))}
           </div>
