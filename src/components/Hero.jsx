@@ -189,21 +189,21 @@ export default function Hero() {
 
         {/* === Hero Heading === */}
         <motion.h1
-  initial={{ opacity: 0, y: 40 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1 }}
-  className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight max-w-6xl mx-auto text-center text-gray-900 dark:text-white tracking-tight"
->
-  Hi, I'm{" "}
-  <span className="relative inline-block group">
-    <span
-      className="bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 bg-clip-text text-transparent dark:from-cyan-300 dark:via-sky-400 dark:to-indigo-300 drop-shadow-[0_2px_5px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out group-hover:brightness-110 group-hover:saturate-150"
-    >
-      Ralph Hontiveros
-    </span>
-    <span className="absolute left-0 bottom-0 w-full h-[3px] bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 opacity-40 rounded-md transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
-  </span>
-</motion.h1>
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight max-w-6xl mx-auto text-center text-gray-900 dark:text-white tracking-tight"
+      >
+        Hi, I'm{" "}
+        <span className="relative inline-block group">
+          <span
+            className="bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 bg-clip-text text-transparent dark:from-cyan-300 dark:via-sky-400 dark:to-indigo-300 drop-shadow-[0_2px_5px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out group-hover:brightness-110 group-hover:saturate-150"
+          >
+            Ralph Hontiveros
+          </span>
+          <span className="absolute left-0 bottom-0 w-full h-[3px] bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 opacity-40 rounded-md transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+        </span>
+      </motion.h1>
 
         {/* === Paragraph Intro === */}
         <motion.p
@@ -222,47 +222,47 @@ export default function Hero() {
 
 
         {/* === Contact Me Button === */}
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.3, duration: 0.8 }}
-  className="mt-16 text-center"
->
-  <a
-    href="#contact"
-    className="inline-block px-10 py-4 text-base font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg backdrop-blur-md hover:shadow-xl hover:scale-105 transition-all duration-300"
-  >
-    Contact Me
-  </a>
-</motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="mt-16 text-center"
+        >
+          <a
+            href="#contact"
+            className="inline-block px-10 py-4 text-base font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg backdrop-blur-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          >
+            Contact Me
+          </a>
+        </motion.div>
 
-{/* === Minimal Media Icons Grid === */}
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.5, duration: 0.8 }}
-  className="mt-8 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-3xl mx-auto px-4"
->
-  {[
-    { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yourusername", label: "Instagram" },
-    { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com/in/yourusername", label: "LinkedIn" },
-    { icon: <Twitter className="w-5 h-5" />, href: "https://twitter.com/yourusername", label: "Twitter" },
-    { icon: <Facebook className="w-5 h-5" />, href: "https://facebook.com/yourusername", label: "Facebook" },
-    { icon: <Phone className="w-5 h-5" />, href: "https://wa.me/yourphonenumber", label: "WhatsApp" },
-    { icon: <Music2 className="w-5 h-5" />, href: "https://tiktok.com/@yourusername", label: "TikTok" },
-  ].map(({ icon, href, label }) => (
-    <a
-      key={label}
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all duration-300"
-      aria-label={label}
-    >
-      {icon}
-    </a>
-  ))}
-</motion.div>
+        {/* === Minimal Media Icons Grid === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mt-8 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-3xl mx-auto px-4"
+        >
+          {[
+            { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yourusername", label: "Instagram" },
+            { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com/in/yourusername", label: "LinkedIn" },
+            { icon: <Twitter className="w-5 h-5" />, href: "https://twitter.com/yourusername", label: "Twitter" },
+            { icon: <Facebook className="w-5 h-5" />, href: "https://facebook.com/yourusername", label: "Facebook" },
+            { icon: <Phone className="w-5 h-5" />, href: "https://wa.me/yourphonenumber", label: "WhatsApp" },
+            { icon: <Music2 className="w-5 h-5" />, href: "https://tiktok.com/@yourusername", label: "TikTok" },
+          ].map(({ icon, href, label }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all duration-300"
+              aria-label={label}
+            >
+              {icon}
+            </a>
+          ))}
+        </motion.div>
         {/* === Scroll Icon === */}
         <motion.div
           animate={{ y: [0, 10, 0] }}
