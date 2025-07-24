@@ -18,7 +18,7 @@ import {
   Twitter,
   Facebook,
   Phone,
-  Music2,
+  Github,
 } from "lucide-react";
 
 // ===== Skills List =====
@@ -244,12 +244,13 @@ export default function Hero() {
           className="mt-8 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-3xl mx-auto px-4"
         >
           {[
-            { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yourusername", label: "Instagram" },
-            { icon: <Linkedin className="w-5 h-5" />, href: "https://linkedin.com/in/yourusername", label: "LinkedIn" },
-            { icon: <Twitter className="w-5 h-5" />, href: "https://twitter.com/yourusername", label: "Twitter" },
-            { icon: <Facebook className="w-5 h-5" />, href: "https://facebook.com/yourusername", label: "Facebook" },
-            { icon: <Phone className="w-5 h-5" />, href: "https://wa.me/yourphonenumber", label: "WhatsApp" },
-            { icon: <Music2 className="w-5 h-5" />, href: "https://tiktok.com/@yourusername", label: "TikTok" },
+            { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/centpaii", label: "Instagram" },
+            { icon: <Linkedin className="w-5 h-5" />, href: "https://www.linkedin.com/in/ralph-hontiveros-849053368", label: "LinkedIn" },
+            { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/hontiveros0515", label: "Twitter" },
+            { icon: <Facebook className="w-5 h-5" />, href: "https://www.facebook.com/Centpaii", label: "Facebook" },
+            { icon: <Phone className="w-5 h-5" />, href: "https://wa.me/639285767289", label: "WhatsApp" },
+            { icon: <Github className="w-5 h-5" />, href: "https://github.com/RalphHontiveros", label: "GitHub"}
+
           ].map(({ icon, href, label }) => (
             <a
               key={label}
