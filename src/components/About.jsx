@@ -76,30 +76,44 @@ export default function About() {
               className="text-gray-800 dark:text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed tracking-wide space-y-5"
             >
               <p>
-                Hi! I’m a passionate{" "}
+                Hi! I’m a dedicated{" "}
                 <span className="font-semibold text-blue-600 dark:text-blue-400">
-                  React Front-End Developer
+                  Front-End Developer
                 </span>{" "}
-                with a strong focus on building responsive, user-friendly web interfaces. I enjoy turning ideas into reality through clean code, modern design, and smooth user experiences using technologies like{" "}
+                and{" "}
+                <span className="font-semibold text-blue-600 dark:text-blue-400">
+                  UI/UX Designer
+                </span>{" "}
+                passionate about creating clean, responsive, and user-friendly
+                web interfaces. I enjoy combining design and code to deliver
+                smooth, intuitive user experiences.
+              </p>
+              <p>
+                I specialize in technologies like{" "}
                 <span className="font-semibold text-blue-600 dark:text-blue-400">
                   React, Tailwind CSS, and JavaScript
-                </span>.
+                </span>
+                , and I always aim for accessible, performant, and scalable
+                solutions.
               </p>
               <p>
-                Currently, I’m sharpening my skills in backend development with the goal of becoming a{" "}
-                <span className="font-semibold text-blue-600 dark:text-blue-400">
-                  Full Stack Developer
-                </span>. I'm learning technologies like{" "}
+                Right now, I'm expanding my knowledge in backend development
+                using{" "}
                 <span className="font-semibold text-blue-600 dark:text-blue-400">
                   Node.js, Express, and MySQL/MongoDB
+                </span>
+                . My ultimate goal is to become a{" "}
+                <span className="font-semibold text-blue-600 dark:text-blue-400">
+                  Full Stack Developer
                 </span>{" "}
-                to gain a deeper understanding of full system architecture and server-side logic.
+                capable of building complete, end-to-end web applications.
               </p>
               <p>
-                I'm driven by continuous learning, clean code, and the impact technology can have when done right.
+                I'm continuously learning and refining my craft to stay ahead in
+                this ever-evolving field.
               </p>
               <p className="text-center font-semibold italic text-blue-600 dark:text-blue-400">
-                Let’s build something awesome together!
+                Let’s build something great together!
               </p>
             </motion.div>
 
