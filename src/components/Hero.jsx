@@ -1,25 +1,7 @@
-// ===== Imports =====
 import React, { useEffect, useState, useRef } from "react";
-import { Sparkle } from "lucide-react";
+import { Sparkle, ChevronsDown, Code, Palette, Cpu, PenTool, Layers, Zap, Terminal, Settings, Instagram, Linkedin, Twitter, Facebook, Phone, Github } from "lucide-react";
 import { Typewriter } from "react-simple-typewriter";
 import { motion } from "framer-motion";
-import {
-  ChevronsDown,
-  Code,
-  Palette,
-  Cpu,
-  PenTool,
-  Layers,
-  Zap,
-  Terminal,
-  Settings,
-  Instagram,
-  Linkedin,
-  Twitter,
-  Facebook,
-  Phone,
-  Github,
-} from "lucide-react";
 
 // ===== Skills List =====
 const skills = [
@@ -33,11 +15,21 @@ const skills = [
   { name: "jQuery", icon: Settings },
 ];
 
+const handleSmoothScroll = (e, id) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const yOffset = -80; // adjust this to match your navbar height
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+      setIsMobileMenuOpen(false);
+    }
+  };
+
 // ===== Main Component =====
 export default function Hero() {
-  const [isDarkMode, setIsDarkMode] = useState(
-    document.documentElement.classList.contains("dark")
-  );
+  const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains("dark"));
 
   // Refs
   const marqueeRef = useRef(null);
@@ -48,7 +40,6 @@ export default function Hero() {
 
   const speed = 60;
 
-  // ===== Effect: Watch for Theme Change =====
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setIsDarkMode(document.documentElement.classList.contains("dark"));
@@ -62,7 +53,6 @@ export default function Hero() {
     return () => observer.disconnect();
   }, []);
 
-  // ===== Effect: Canvas Background Animation =====
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -81,7 +71,6 @@ export default function Hero() {
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-
       const dotColor = isDarkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.4)";
       const baseLineColor = isDarkMode ? [255, 255, 255] : [0, 0, 0];
 
@@ -128,12 +117,10 @@ export default function Hero() {
     return () => window.removeEventListener("resize", handleResize);
   }, [isDarkMode]);
 
-  // ===== Marquee Animation Functions =====
   const animateMarquee = (timestamp) => {
     if (!lastTimestamp.current) lastTimestamp.current = timestamp;
     const delta = (timestamp - lastTimestamp.current) / 1000;
     lastTimestamp.current = timestamp;
-
     offsetX.current -= speed * delta;
 
     const el = marqueeRef.current;
@@ -159,16 +146,12 @@ export default function Hero() {
     animationFrame.current = requestAnimationFrame(animateMarquee);
   };
 
-  // ===== Render =====
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-black transition-colors duration-500">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-0 w-full h-full pointer-events-none"
-      />
+    <div className="relative overflow-hidden bg-white dark:bg-black transition-colors duration-500 scroll-smooth">
+      <canvas ref={canvasRef} className="absolute inset-0 z-0 w-full h-full pointer-events-none" />
 
       <section className="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 py-24 text-center">
-        {/* === Animated Developer Badge === */}
+        {/* === Badge === */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -187,56 +170,68 @@ export default function Hero() {
           />
         </motion.div>
 
-        {/* === Hero Heading === */}
+        {/* === Heading === */}
         <motion.h1
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight max-w-6xl mx-auto text-center text-gray-900 dark:text-white tracking-tight"
-      >
-        Hi, I'm{" "}
-        <span className="relative inline-block group">
-          <span
-            className="bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 bg-clip-text text-transparent dark:from-cyan-300 dark:via-sky-400 dark:to-indigo-300 drop-shadow-[0_2px_5px_rgba(0,0,0,0.25)] transition-all duration-300 ease-in-out group-hover:brightness-110 group-hover:saturate-150"
-          >
-            Ralph Hontiveros
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight max-w-6xl mx-auto text-center text-gray-900 dark:text-white tracking-tight"
+        >
+          Hi, I'm{" "}
+          <span className="relative inline-block group">
+            <span className="bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 bg-clip-text text-transparent dark:from-cyan-300 dark:via-sky-400 dark:to-indigo-300">
+              Ralph Hontiveros
+            </span>
+            <span className="absolute left-0 bottom-0 w-full h-[3px] bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 opacity-40 rounded-md transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
           </span>
-          <span className="absolute left-0 bottom-0 w-full h-[3px] bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 opacity-40 rounded-md transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
-        </span>
-      </motion.h1>
+        </motion.h1>
 
-        {/* === Paragraph Intro === */}
+        {/* === Intro === */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="mt-6 text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl text-center leading-relaxed"
+          className="mt-6 text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl text-center"
         >
           I build smooth, responsive, and modern web interfaces using{" "}
           <span className="font-semibold text-blue-600 dark:text-blue-300">ReactJS</span>,{" "}
           <span className="font-semibold text-blue-600 dark:text-blue-300">TailwindCSS</span>, and{" "}
           <span className="font-semibold text-blue-600 dark:text-blue-300">Axios</span>.
-          My goal is to bring ideas to life with clean code and delightful UI.
         </motion.p>
 
-
-
-        {/* === Contact Me Button === */}
+        {/* === Buttons === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="mt-16 text-center"
+          className="mt-16 flex flex-col sm:flex-row items-center gap-4 text-center"
         >
           <a
             href="#contact"
-            className="inline-block px-10 py-4 text-base font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg backdrop-blur-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("contact");
+              if (element) {
+                const yOffset = -80;
+                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: "smooth" });
+              }
+            }}
+            className="px-10 py-4 text-base font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg backdrop-blur-md hover:shadow-xl hover:scale-105 transition-all duration-300"
           >
             Contact Me
           </a>
+
+          <a
+            href="/resume.pdf"
+            download
+            className="px-10 py-4 text-base font-bold bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-full shadow-lg backdrop-blur-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+          >
+            Download Resume
+          </a>
         </motion.div>
 
-        {/* === Minimal Media Icons Grid === */}
+        {/* === Social Icons === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -249,8 +244,7 @@ export default function Hero() {
             { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/hontiveros0515", label: "Twitter" },
             { icon: <Facebook className="w-5 h-5" />, href: "https://www.facebook.com/Centpaii", label: "Facebook" },
             { icon: <Phone className="w-5 h-5" />, href: "https://wa.me/639285767289", label: "WhatsApp" },
-            { icon: <Github className="w-5 h-5" />, href: "https://github.com/RalphHontiveros", label: "GitHub"}
-
+            { icon: <Github className="w-5 h-5" />, href: "https://github.com/RalphHontiveros", label: "GitHub" }
           ].map(({ icon, href, label }) => (
             <a
               key={label}
@@ -264,6 +258,7 @@ export default function Hero() {
             </a>
           ))}
         </motion.div>
+
         {/* === Scroll Icon === */}
         <motion.div
           animate={{ y: [0, 10, 0] }}
@@ -273,7 +268,7 @@ export default function Hero() {
           <ChevronsDown className="w-6 h-6 text-blue-600 dark:text-blue-300" />
         </motion.div>
 
-        {/* === Skills Marquee === */}
+        {/* === Marquee === */}
         <div className="mt-10 w-full overflow-hidden relative">
           <div className="absolute left-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 h-full w-16 sm:w-24 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none" />
@@ -291,9 +286,7 @@ export default function Hero() {
                 <div className="p-1.5 sm:p-2 rounded-full bg-gradient-to-tr from-blue-500 via-blue-400 to-blue-600 text-white dark:from-blue-600 dark:to-blue-400 shadow-md group-hover:rotate-[15deg] transition-transform duration-300">
                   <skill.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <span className="text-xs sm:text-sm md:text-base">
-                  {skill.name}
-                </span>
+                <span className="text-xs sm:text-sm md:text-base">{skill.name}</span>
               </div>
             ))}
           </div>
