@@ -1,21 +1,23 @@
 import { Mail } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Contact() {
   const form = useRef();
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(null);
 
   const sendEmail = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setStatus(null);
 
     const formData = new FormData(form.current);
     const data = {
       name: formData.get("name"),
+      phone: formData.get("phone"),
       email: formData.get("email"),
+      subject: formData.get("subject"),
       message: formData.get("message"),
     };
 
@@ -27,22 +29,26 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        setStatus("✅ Message sent successfully!");
+        toast.success("✅ Message sent successfully!");
         form.current.reset();
       } else {
         const errRes = await response.json();
-        setStatus(`❌ Failed: ${errRes.error || "Unknown error."}`);
+        toast.error(`❌ Failed: ${errRes.error || "Unknown error."}`);
       }
     } catch (err) {
       console.error("Send error:", err);
-      setStatus("❌ Network or server error. Try again.");
+      toast.error("❌ Network or server error. Try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="contact" className="min-h-screen flex flex-col items-center justify-center px-6 py-24 bg-gradient-to-b from-white via-blue-50 to-white dark:from-black dark:via-gray-900 dark:to-black">
+    <section
+      id="contact"
+      className="min-h-screen flex flex-col items-center justify-center px-6 py-24 bg-gradient-to-b from-white via-blue-50 to-white dark:from-black dark:via-gray-900 dark:to-black"
+    >
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className="max-w-2xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -67,38 +73,48 @@ export default function Contact() {
               name="name"
               placeholder="Your Name"
               required
-              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white"
+              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+            />
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              required
+              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             />
             <input
               type="email"
               name="email"
               placeholder="Your Email"
               required
-              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white"
+              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+            />
+            <input
+              type="text"
+              name="subject"
+              placeholder="Subject"
+              required
+              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
             />
             <textarea
               name="message"
               placeholder="Your Message"
               rows="4"
               required
-              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white resize-none"
+              className="w-full px-4 py-3 rounded-xl border bg-white dark:bg-gray-900 dark:text-white resize-none placeholder-gray-500 dark:placeholder-gray-400"
             ></textarea>
             <button
               type="submit"
               disabled={loading}
               className={`w-full ${
-                loading ? "bg-gray-400 cursor-not-allowed" : "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
               } text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105`}
             >
               {loading ? "Sending..." : "Send Message"}
             </button>
           </form>
-
-          {status && (
-            <p className="mt-4 text-sm font-medium text-center text-blue-600 dark:text-blue-400">
-              {status}
-            </p>
-          )}
         </motion.div>
 
         <p className="mt-12 text-sm text-gray-400 dark:text-gray-500">

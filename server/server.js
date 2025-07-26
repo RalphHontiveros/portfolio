@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:5173", // adjust this to your frontend URL
+  origin: "http://localhost:5173",
   methods: ["GET", "POST"],
   credentials: true
 }));
@@ -18,9 +18,10 @@ app.use(express.json());
 
 // Email send route
 app.post("/send", async (req, res) => {
-  const { name, email, message } = req.body;
+  const { name, phone, email, subject, message } = req.body;
 
-  if (!name || !email || !message) {
+  // Basic validation
+  if (!name || !phone || !email || !subject || !message) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -34,15 +35,18 @@ app.post("/send", async (req, res) => {
     });
 
     await transporter.sendMail({
-      from: `"${name}" <${process.env.EMAIL_USER}>`, // Gmail requires your email here
+      from: `"${name}" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_RECEIVER,
-      replyTo: email, // This sets the user's email when you click "Reply"
-      subject: `New message from ${name}`,
+      replyTo: email,
+      subject: `📩 ${subject} - from ${name}`,
       html: `
+        <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
         <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${message.replace(/\n/g, "<br>")}</p>
       `
     });
 
@@ -53,6 +57,7 @@ app.post("/send", async (req, res) => {
   }
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);

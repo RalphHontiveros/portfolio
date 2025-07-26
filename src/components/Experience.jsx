@@ -3,9 +3,14 @@ import { motion } from "framer-motion";
 
 const experiences = [
   {
-    role: "Front-End Developer Intern",
-    company: "City Information Communication and Technology Office - Trece Martires ",
-    duration: "Jul 2024 - Sept 2024",
+    role: "Bachelor of Science in Computer Science",
+    company: "Emilio Aguinaldo College – Cavite",
+    duration: "2021 – 2025"
+  },
+  {
+    role: "Front-End Developer",
+    company: "City Information Communication and Technology Office - Trece Martires",
+    duration: "Jul 2024 – Sept 2024",
     tasks: [
       "Developed Queuing Management System UI using HTML, CSS, Bootstrap, and ASP.NET.",
       "Created reusable components and responsive layouts.",
@@ -15,13 +20,14 @@ const experiences = [
   {
     role: "Freelance Web Developer",
     company: "Self-Employed",
-    duration: "2023 - Present",
+    duration: "2024 – Present",
     tasks: [
-      "Built portfolio websites using React and Tailwind CSS.",
-      "Integrated Firebase for basic backend functionality.",
-      "Focused on UI/UX principles to deliver clean, mobile-friendly designs.",
+      "Developed portfolio websites using React and Tailwind CSS.",
+      "Built RESTful APIs and backend functionality using Node.js and Express.",
+      "Applied UI/UX best practices to create clean, responsive, and user-friendly designs.",
     ],
-  },
+  }
+
 ];
 
 export default function Experience() {
@@ -48,7 +54,7 @@ export default function Experience() {
               transition={{ duration: 0.6, delay: i * 0.2 }}
               className="relative group bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300"
             >
-              {/* Dot on timeline */}
+              {/* Timeline dot */}
               <div className="absolute -left-[30px] top-6 w-4 h-4 rounded-full bg-blue-500 dark:bg-blue-400 border-4 border-white dark:border-gray-800 shadow-md"></div>
 
               <div className="flex justify-between items-center mb-2">
@@ -59,14 +65,18 @@ export default function Experience() {
                   {exp.duration}
                 </span>
               </div>
+
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 {exp.company}
               </p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-200">
-                {exp.tasks.map((task, j) => (
-                  <li key={j}>{task}</li>
-                ))}
-              </ul>
+
+              {exp.tasks && (
+                <ul className="list-disc list-inside space-y-1 text-sm text-gray-700 dark:text-gray-200">
+                  {exp.tasks.map((task, j) => (
+                    <li key={j}>{task}</li>
+                  ))}
+                </ul>
+              )}
             </motion.div>
           ))}
         </div>

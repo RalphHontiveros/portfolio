@@ -48,20 +48,6 @@ export default function Projects() {
       demo: "https://appointment-lwf-queue.onrender.com",
       stack: ["React", "Tailwind", "Queue System"],
     },
-    {
-      title: "Weather Forecast App",
-      desc: "A real-time weather app using OpenWeatherMap API with error handling and clean UI.",
-      image: "/images/weather-app.png",
-      demo: "https://your-demo-link.com",
-      stack: ["React", "API", "Tailwind"],
-    },
-    {
-      title: "Portfolio Website",
-      desc: "My personal portfolio built with React and Tailwind to showcase projects and skills.",
-      image: "/images/portfolio.png",
-      demo: "https://your-demo-link.com",
-      stack: ["React", "Tailwind", "Responsive"],
-    },
   ];
 
   return (

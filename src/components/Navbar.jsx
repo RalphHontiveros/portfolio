@@ -20,8 +20,19 @@ export default function Navbar() {
     }
   }, [isDarkMode]);
 
-  // Removed "resume" from the array
-  const navLinks = ["about", "projects", "Experience", "contact"];
+  const navLinks = ["about", "projects", "experience", "contact"];
+
+  const handleSmoothScroll = (e, id) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const yOffset = -80; // adjust this to match your navbar height
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-md border-b border-zinc-200 dark:border-zinc-800 transition-all duration-300">
@@ -40,6 +51,7 @@ export default function Navbar() {
             <li key={item}>
               <a
                 href={`#${item}`}
+                onClick={(e) => handleSmoothScroll(e, item)}
                 className="relative group px-1 transition-colors duration-200 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 dark:focus-visible:ring-blue-500 rounded-sm"
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -83,7 +95,7 @@ export default function Navbar() {
             <li key={item}>
               <a
                 href={`#${item}`}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => handleSmoothScroll(e, item)}
                 className="block px-2 py-2 rounded hover:bg-blue-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
