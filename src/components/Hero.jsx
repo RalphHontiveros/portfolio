@@ -1,5 +1,24 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Sparkle, ChevronsDown, Code, Palette, Cpu, PenTool, Layers, Zap, Terminal, Settings, Instagram, Linkedin, Twitter, Facebook, Phone, Github } from "lucide-react";
+import {
+  Sparkle,
+  ChevronsDown,
+  Code,
+  Palette,
+  Cpu,
+  PenTool,
+  Layers,
+  Zap,
+  Terminal,
+  Settings,
+  Instagram,
+  Linkedin,
+  Twitter,
+  Facebook,
+  Phone,
+  Github,
+  Database, // ✅ Add this line
+} from "lucide-react";
+
 import { Typewriter } from "react-simple-typewriter";
 import { motion } from "framer-motion";
 
@@ -13,8 +32,9 @@ const skills = [
   { name: "Bootstrap", icon: Layers },
   { name: "Axios", icon: Zap },
   { name: "jQuery", icon: Settings },
+  { name: "MongoDB", icon: Database },
+  { name: "MySQL", icon: Database },
 ];
-
 const handleSmoothScroll = (e, id) => {
     e.preventDefault();
     const element = document.getElementById(id);
