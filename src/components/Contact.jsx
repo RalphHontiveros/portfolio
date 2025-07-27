@@ -120,7 +120,7 @@ export default function Contact() {
         <p className="mt-12 text-sm text-gray-400 dark:text-gray-500">
           or message me directly on{" "}
           <a
-            href="https://www.linkedin.com/in/ralphhontiveros"
+            href="https://www.linkedin.com/in/ralph-hontiveros-849053368"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-blue-600 dark:hover:text-blue-400"
