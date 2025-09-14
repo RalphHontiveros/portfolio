@@ -46,8 +46,20 @@ export default function Projects() {
         "/images/queue3.png",
       ],
       demo: "https://appointment-lwf-queue.onrender.com",
-      stack: ["React", "Tailwind", "Queue System"],
+      stack: ["ReactJS", "TailwindCSS", "MERN"],
     },
+    {
+      title: "Taskero App",
+      desc: "A task management app with appointments and tasks combined into one simple workflow.",
+      images: [
+        "/images/taskero1.png",
+        "/images/taskero2.png",
+        "/images/taskero3.png",
+      ],
+      demo: "https://your-taskero-demo-link.com", // replace with actual link
+      stack: ["NextJS 15", "TailwindCSS", "Supabase"],
+    },
+
   ];
 
   return (
