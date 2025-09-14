@@ -16,7 +16,8 @@ import {
   Facebook,
   Phone,
   Github,
-  Database, // ✅ Add this line
+  Database,
+  AppWindow, 
 } from "lucide-react";
 
 import { Typewriter } from "react-simple-typewriter";
@@ -34,6 +35,8 @@ const skills = [
   { name: "jQuery", icon: Settings },
   { name: "MongoDB", icon: Database },
   { name: "MySQL", icon: Database },
+   { name: "Next.js 15", icon: AppWindow },
+  { name: "Supabase", icon: Database },
 ];
 const handleSmoothScroll = (e, id) => {
     e.preventDefault();
