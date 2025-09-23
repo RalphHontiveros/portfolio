@@ -49,14 +49,14 @@ export default function Projects() {
       stack: ["ReactJS", "TailwindCSS", "MERN"],
     },
     {
-      title: "Taskero App",
+      title: "Tivra App",
       desc: "A task management app with appointments and tasks combined into one simple workflow.",
       images: [
-        "/images/taskero1.png",
-        "/images/taskero2.png",
-        "/images/taskero3.png",
+        "/images/tivra1.png",
+        "/images/tivra2.png",
+        "/images/tivra3.png",
       ],
-      demo: "https://your-taskero-demo-link.com", // replace with actual link
+      demo: "https://tivra-three.vercel.app", 
       stack: ["NextJS 15", "TailwindCSS", "Supabase"],
     },
 
